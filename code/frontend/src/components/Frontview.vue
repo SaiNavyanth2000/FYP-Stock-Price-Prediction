@@ -20,7 +20,7 @@
       </b-form-group>
       <b-button @click='submit' id='button-1' type='button' variant='dark'
         >Predict
-        ></b-button
+        </b-button
       >
     </b-form>
   </div>
@@ -48,7 +48,7 @@ export default {
   },
   methods: {
     submit() {
-      this.$router.push({ name: 'PredictPrice', params: { selected: this.selected } });
+      this.$router.push({ name: 'PredictPrice', params: { selected: this.selected, company: this } });
     },
   },
 };
