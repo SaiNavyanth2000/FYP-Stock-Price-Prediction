@@ -38,7 +38,7 @@ def submitData():
         tick   = request.args.get('ticker')
         print(tick)
         #get the model if it exists locally
-        model_path = "../../data/models/" + tick + "_model"
+        model_path = "../../data/models/" + tick + "/lstm"
         if(os.path.exists(model_path)):
             model = load_model(model_path)
         
