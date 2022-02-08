@@ -1,5 +1,5 @@
-from flask import Flask, request,jsonify,json
-from flask_cors import CORS, cross_origin
+from flask import Flask, request,jsonify
+from flask_cors import CORS
 import pickle
 import os
 from firebase_admin import storage
@@ -12,6 +12,8 @@ import pandas as pd
 import numpy as np
 import json
 import firebase_admin
+import pandas_ta as ta
+from sklearn.preprocessing import MinMaxScaler
 # from flask import current_app
 # current_app.config['SERVER_NAME'] = 'localhost'   
 # with current_app.test_request_context():
@@ -39,11 +41,8 @@ def submitData():
         model_type = request.args.get('model_type')
         print(model_type)
         print(tick)
-        #get the model if it exists locally
        
-        
-        #get the scaler if it exists locally
-        
+        #custom ann
         if(model_type == 'ANN'):
             scaler_path = "../../data/normalizers/" + tick + "/ann_x.pkl"
             model_path = "../../data/models/" + tick + "/ann"
@@ -57,6 +56,18 @@ def submitData():
             if(os.path.exists(scaler_path)):
                 with open(scaler_path, "rb") as input_file:
                     scaler_y = pickle.load(input_file)
+        
+        #multivariate lstm
+        elif model_type == 'MultiLstm':
+            scaler_path = "../../data/normalizers/" + tick + "/multi_lstm.pkl"
+            model_path = "../../data/models/" + tick + "/multi_lstm"
+            if(os.path.exists(model_path)):
+                model = load_model(model_path)
+            if(os.path.exists(scaler_path)):
+                with open(scaler_path, "rb") as input_file:
+                    scaler = pickle.load(input_file)
+        
+        #lstm for now
         else:
             scaler_path = "../../data/normalizers/" + tick + "/" + model_type + ".pkl"
             model_path = "../../data/models/" + tick + "/lstm"
@@ -79,6 +90,9 @@ def submitData():
     
         #find the starting date (100 trading days before today)
         #https://stackoverflow.com/questions/441147/how-to-subtract-a-day-from-a-date
+        # today = date.today()
+        global today
+        from datetime import timedelta
         start = today - timedelta(days=190)
 
         df = getTestData(tick,start) 
@@ -106,7 +120,7 @@ def submitData():
 
             return jsonify(response_object)
 
-        else:    
+        elif model_type == 'lstm':    
             #preprocess data
             
             df = df.reset_index()['Close']
@@ -125,8 +139,58 @@ def submitData():
             
             response_object['message'] ='Got data!'
             return jsonify(response_object)
+        
+        else:
+            
+            def getTestData(ticker, start): 
+                data = pdr.get_data_yahoo(ticker, start=start, end=today)
+                # dataname= ticker+"_"+str(today)
+                return data[-350:]
+                
+            from datetime import date  
+            today = date.today()
+
+            from datetime import timedelta
+            start = today - timedelta(days=500)
+
+            df = getTestData(tick,start) 
+
+            df['H-L'] = df['High'] - df['Low']
+            df['O-C'] = df['Open'] - df['Close']
+            df['5MA'] = df['Adj Close'].rolling(window=5).mean()
+            df['10MA'] = df['Adj Close'].rolling(window=10).mean()
+            df['20MA'] = df['Adj Close'].rolling(window=20).mean()
+            df['7SD'] = df['Adj Close'].rolling(window=7).std()
+            df["EMA8"] = df['Adj Close'].ewm(span=8).mean()
+            df["EMA21"] = df['Adj Close'].ewm(span=21).mean()
+            df['EMA34'] = df['Adj Close'].ewm(span=34).mean()
+            df['EMA55'] = df['Adj Close'].ewm(span=55).mean()
+            df.dropna(inplace=True)
+            df['Returns'] = df['Close'] / df['Close'].shift(1)
+            df['Returns'] -= 1
+            df.dropna(inplace=True)
+            df.ta.rsi(close='Close', length=14, append=True)
+            df.dropna(inplace=True)
+
+            features = ['Adj Close','H-L','O-C','5MA','10MA','20MA','7SD','RSI_14', 'EMA8','EMA21','EMA34','EMA55','Returns','Volume']
+            df = df[features].apply(pd.to_numeric)
+            df = df[-50:]
+            scaled_data = scaler.transform(df)
+            scaled_data.shape
+            scaled_data = scaled_data.reshape((1,50,14))
+            sc_output = MinMaxScaler()
+
+            #https://stackoverflow.com/questions/49330195/how-to-use-inverse-transform-in-minmaxscaler-for-a-column-in-a-matrix
+            sc_output.min_ , sc_output.scale_ = scaler.min_[0], scaler.scale_[0]
+            test_data = np.asarray(scaled_data, np.float32)
+            pred = model.predict(test_data)  
+            prediction_value = sc_output.inverse_transform(pred)
+            response_object['prediction_value'] = str(prediction_value[0][0])
+            response_object['past_100_days'] = storing_data
+            
+            response_object['message'] ='Got data!'
+            return jsonify(response_object)
 
 
 if __name__ == '__main__':
-    print('hey')
     app.run(debug=True)

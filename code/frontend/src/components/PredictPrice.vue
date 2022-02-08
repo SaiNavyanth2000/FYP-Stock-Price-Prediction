@@ -1,41 +1,50 @@
 <template>
   <!-- https://stackoverflow.com/questions/11895476/bootstrap-element-100-width -->
-  <div>
+  <div id="container">
     <h3 v-if="!loading">Stock Price Prediction</h3>
-    <div class="container-fluid" style="padding: 5vw">
-      <div class="row">
-        <div class="col-5" v-if="!loading">
-          <h4 style="margin-left: 0">Select which model you would want to run your code on:</h4>
-          <b-form-select
-            v-model="model_type"
-            :options="options"
-            size="lg"
-            class="mt-3"
-            placeholder="Select one model"
-          ></b-form-select>
-          <br /><br /><br /><br /><br /><br /><br /><br />
-          <h4 v-if="!loading" style="margin-left: 0">
-            The predicted price of {{ selected }} for tomorrow is:
-            <span id="prediction" :style="`color:${color}`"> ${{ prediction }}</span>
-          </h4>
-          <b-button
-            v-if="!loading"
-            @click="back"
-            id="button-2"
-            style="margin-left: 10"
-            type="button"
-            variant="dark"
-            >Back
-          </b-button>
-        </div>
-        <div v-if="loading" class="d-flex justify-content-center mb-3">
-          <b-spinner v-if="loading" class="m-50 flex flex-center"></b-spinner>
-        </div>
-        <div class="col-7">
+    <div class="row" style="padding: 2vw">
+      <div class="col-2"></div>
+      <div class="col-6">
+        <div class="row" style="max-width: 100%">
           <Chart v-if="!loading" :chartData="stockData" />
         </div>
+        <br /><br />
+        <div class="row">
+          <br />
+          <br />
+          <br />
+          <MultiLstm v-if="!loading" />
+        </div>
       </div>
-      <br />
+
+      <div class="col-2" v-if="!loading">
+        <h4 style="margin-left: 0">Select which model you would want to run your code on:</h4>
+        <b-form-select
+          v-model="model_type"
+          :options="options"
+          size="lg"
+          class="mt-3"
+          placeholder="Select one model"
+        ></b-form-select>
+        <br /><br /><br /><br /><br /><br /><br /><br />
+        <h4 v-if="!loading" style="margin-left: 0">
+          The predicted price of {{ selected }} for tomorrow is:
+          <span id="prediction" :style="`color:${color}`"> ${{ prediction }}</span>
+        </h4>
+        <b-button
+          v-if="!loading"
+          @click="back"
+          id="button-2"
+          style="margin-left: 10"
+          type="button"
+          variant="dark"
+          >Back
+        </b-button>
+      </div>
+      <div v-if="loading" class="d-flex justify-content-center mb-3">
+        <b-spinner v-if="loading" class="m-50 flex flex-center"></b-spinner>
+      </div>
+      <div class="col-2"></div>
     </div>
   </div>
 </template>
@@ -45,10 +54,12 @@ import axios from 'axios';
 import Chart from './Chart.vue';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
+import MultiLstm from './MultiLstm.vue';
 
 export default {
   components: {
     Chart,
+    MultiLstm,
   },
   data() {
     return {
@@ -63,9 +74,10 @@ export default {
       options: [
         { value: 'lstm', text: 'LSTM' },
         { value: 'ARIMA', text: 'ARIMA' },
-        { value: 'Prophe', text: 'Prophet' },
+        { value: 'Prophet', text: 'Prophet' },
         { value: 'ANN', text: 'Custom ANN' },
         { value: 'RF', text: 'Random Forest' },
+        { value: 'MultiLstm', text: 'Multivariate LSTM' },
       ],
     };
   },
@@ -141,11 +153,16 @@ export default {
   margin-left: 0%;
   margin-top: 1%;
 }
+#container {
+  margin: 2vw;
+}
 h3 {
-  margin-left: 40%;
-  margin-top: 20px;
-  font-family: 'Castoro', serif;
-  font-weight: 'bold';
+  font-family: sohne, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-weight: '800';
+}
+#chart {
+  text-align: right;
+  border: 'solid red 1px';
 }
 h4,
 p,
