@@ -13,7 +13,7 @@
           <br />
           <br />
           <br />
-          <MultiLstm v-if="!loading" />
+          <MultiLstm v-if="!loading" :stockdata="past50days" />
         </div>
       </div>
 
@@ -68,6 +68,7 @@ export default {
       prediction: null,
       stockPrice: null,
       previousDayPrice: null,
+      past50days: null,
       color: null,
       loading: true,
       months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
@@ -99,7 +100,10 @@ export default {
           this.loading = false;
           this.stockPrice = response;
           this.prediction = this.stockPrice.data.prediction_value;
-
+          this.past50days = JSON.parse(this.stockPrice.data.past_50_days);
+          console.log('past 50 days data');
+          console.log(this.past50days);
+          console.log(Object.values(this.past50days['Adj Close']));
           const array = Object.values(JSON.parse(this.stockPrice.data.past_100_days));
           console.log(this.previousDayPrice, array);
           this.previousDayPrice = array[array.length - 1];

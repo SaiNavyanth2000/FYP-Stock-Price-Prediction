@@ -187,7 +187,7 @@ def submitData():
             prediction_value = sc_output.inverse_transform(pred)
             response_object['prediction_value'] = str(prediction_value[0][0])
             response_object['past_100_days'] = storing_data
-            
+            response_object['past_50_days'] = df.T.to_json()
             response_object['message'] ='Got data!'
             return jsonify(response_object)
 
