@@ -1,32 +1,28 @@
 <template>
-  <div id='app'>
+  <div id="app">
     <h3>Stock Price Prediction</h3>
-    <b-form @submit='submit'>
+    <b-form @submit="submit">
       <b-form-group
-        id='input-group-1'
-        label='Select the stock ticker you want the prediction for'
-        label-for='input-1'
+        id="input-group-1"
+        label="Select the stock ticker you want the prediction for"
+        label-for="input-1"
       >
         <b-form-select
-          v-model='selected'
-          :options='options'
-          size='sm'
-          class='mt-3'
-          placeholder='Select one stock'
+          v-model="selected"
+          :options="options"
+          size="sm"
+          class="mt-3"
+          placeholder="Select one stock"
         ></b-form-select>
-        <div class='mt-3'>
+        <div class="mt-3">
           Ticker of the selected company: <strong>{{ selected }}</strong>
         </div>
       </b-form-group>
-      <b-button @click='submit' id='button-1' type='button' variant='dark'
-        >Predict
-        </b-button
-      >
+      <b-button @click="submit" id="button-1" type="button" variant="dark">Predict </b-button>
     </b-form>
   </div>
 </template>
 <script>
-
 export default {
   data() {
     return {
@@ -38,17 +34,16 @@ export default {
         { value: 'FB', text: 'Meta Platforms' },
         { value: 'TSLA', text: 'Tesla' },
         { value: 'NVDA', text: 'NVIDIA Corp' },
-        { value: 'GOOG', text: 'Alphabet Inc. (GOOG)' },
-        { value: 'GOOGL', text: 'Alphabet Inc. (GOOGL)' },
-        { value: 'CSCO', text: 'Cisco Systems Inc' },
-        { value: 'AVGO', text: 'Broadcom Inc.' },
       ],
       stockPrice: null,
     };
   },
   methods: {
     submit() {
-      this.$router.push({ name: 'PredictPrice', params: { selected: this.selected, company: this } });
+      this.$router.push({
+        name: 'PredictPrice',
+        params: { selected: this.selected, company: this },
+      });
     },
   },
 };

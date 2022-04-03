@@ -74,10 +74,7 @@ export default {
       months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
       options: [
         { value: 'lstm', text: 'LSTM' },
-        { value: 'ARIMA', text: 'ARIMA' },
-        { value: 'Prophet', text: 'Prophet' },
         { value: 'ANN', text: 'Custom ANN' },
-        { value: 'RF', text: 'Random Forest' },
         { value: 'MultiLstm', text: 'Multivariate LSTM' },
       ],
     };

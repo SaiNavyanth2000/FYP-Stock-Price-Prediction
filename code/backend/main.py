@@ -44,6 +44,7 @@ def submitData():
        
         #custom ann
         if(model_type == 'ANN'):
+            print('ann model loading')
             scaler_path = "../../data/normalizers/" + tick + "/ann_x.pkl"
             model_path = "../../data/models/" + tick + "/ann"
             if(os.path.exists(model_path)):
@@ -59,6 +60,7 @@ def submitData():
         
         #multivariate lstm
         elif model_type == 'MultiLstm':
+            print('multi lstm model loading')
             scaler_path = "../../data/normalizers/" + tick + "/multi_lstm.pkl"
             model_path = "../../data/models/" + tick + "/multi_lstm"
             if(os.path.exists(model_path)):
@@ -69,6 +71,7 @@ def submitData():
         
         #lstm for now
         else:
+            print('lstm model loading')            
             scaler_path = "../../data/normalizers/" + tick + "/" + model_type + ".pkl"
             model_path = "../../data/models/" + tick + "/lstm"
             if(os.path.exists(model_path)):
@@ -85,7 +88,7 @@ def submitData():
         def getTestData(ticker, start):
             data = pdr.get_data_yahoo(ticker, start=start, end=today)
             # dataname= ticker+"_"+str(today)
-            return data[-100:]
+            return data[-100:-1]
             
     
         #find the starting date (100 trading days before today)
@@ -93,9 +96,11 @@ def submitData():
         # today = date.today()
         global today
         from datetime import timedelta
-        start = today - timedelta(days=190)
+        start = today - timedelta(days=290)
 
         df = getTestData(tick,start) 
+
+        # print(df['Close'])
 
         storing_data = df['Close'].copy().to_json()   
         if(model_type == 'ANN'):
@@ -145,7 +150,7 @@ def submitData():
             def getTestData(ticker, start): 
                 data = pdr.get_data_yahoo(ticker, start=start, end=today)
                 # dataname= ticker+"_"+str(today)
-                return data[-350:]
+                return data[-350:-1]
                 
             from datetime import date  
             today = date.today()
@@ -176,7 +181,7 @@ def submitData():
             df = df[features].apply(pd.to_numeric)
             df = df[-50:]
             scaled_data = scaler.transform(df)
-            scaled_data.shape
+            # scaled_data.shape
             scaled_data = scaled_data.reshape((1,50,14))
             sc_output = MinMaxScaler()
 
@@ -185,6 +190,7 @@ def submitData():
             test_data = np.asarray(scaled_data, np.float32)
             pred = model.predict(test_data)  
             prediction_value = sc_output.inverse_transform(pred)
+
             response_object['prediction_value'] = str(prediction_value[0][0])
             response_object['past_100_days'] = storing_data
             response_object['past_50_days'] = df.T.to_json()
