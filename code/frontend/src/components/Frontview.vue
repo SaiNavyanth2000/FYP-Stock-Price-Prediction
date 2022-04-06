@@ -31,9 +31,8 @@ export default {
         { value: 'AAPL', text: 'Apple' },
         { value: 'AMZN', text: 'Amazon' },
         { value: 'MSFT', text: 'Microsoft Corp' },
-        { value: 'FB', text: 'Meta Platforms' },
         { value: 'TSLA', text: 'Tesla' },
-        { value: 'NVDA', text: 'NVIDIA Corp' },
+        { value: 'GOOGL', text: 'Google' },
       ],
       stockPrice: null,
     };
