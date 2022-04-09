@@ -74,5 +74,6 @@ def multi_lstm_model(tick):
     response_object['prediction_value'] = str(prediction_value[0][0])
     response_object['past_100_days'] = storing_data
     response_object['past_50_days'] = df.T.to_json()
+    response_object['tick'] = tick
     response_object['message'] ='Got data!'
     return jsonify(response_object)

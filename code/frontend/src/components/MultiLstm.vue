@@ -1,18 +1,21 @@
 <template>
   <div id="app">
-    <p>Multivariate LSTM (Long Short Term Memory) network has been trained with 50 timestamps.</p>
-    <p>So, this is how it splits the data:</p>
-    <img src="../.././public/assets/images/multi_lstm/prediction_demo.jpg" />
     <p>
-      Based on the past 50 days of data, the model will predict the closing price of the 51st day.
+      Multivariate LSTM (Long Short Term Memory) network has been trained with
+      7 timestamps.
+    </p>
+    <p>So, this is how it splits the data:</p>
+    <img src="../../public/assets/images/multi_lstm/prediction_demo.jpg" />
+    <p>
+      Based on the past 7 days of data, the model will predict the closing
+      price of the next day.
     </p>
     <br /><br />
     <p>
-      In mltivariate LSTM the prediction is based on multiple features. The features used to train
-      our model are:
+      In mltivariate LSTM the prediction is based on multiple features. The
+      features used to train our model are:
     </p>
     <ul>
-      <li>Adjusted Closing Price</li>
       <li>High - Low (difference between the two)</li>
       <li>Open - Close (difference between the two</li>
       <li>5 day moving average</li>
@@ -29,16 +32,22 @@
     </ul>
     <br />
     <p>
-      Different models have been trained with different layers. After hyperparameter tuning, this is
-      the best model for stock price data:
+      Different models have been trained with different layers. After
+      hyperparameter tuning, this is the best model for stock price data:
     </p>
     <img src="../.././public/assets/images/multi_lstm/model_summary.jpg" />
 
     <div class="table-wrapper-scroll-y my-custom-scrollbar mt-5">
-      <table class="table table-bordered table-striped" v-if="Object.keys(stockdata).length > 0">
+      <table
+        class="table table-bordered table-striped"
+        v-if="Object.keys(stockdata).length > 0"
+      >
         <thead>
           <tr>
-            <th v-for="(key, index) in Object.keys(Object.values(stockdata)[0])" :key="index">
+            <th
+              v-for="(key, index) in Object.keys(Object.values(stockdata)[0])"
+              :key="index"
+            >
               {{ key }}
             </th>
           </tr>
@@ -64,8 +73,8 @@ export default {
     return {};
   },
   created() {
-    console.log(this.stockdata);
-    console.log(Object.values(this.stockdata['Adj Close']));
+    // console.log(this.stockdata);
+    // console.log(Object.values(this.stockdata['Adj Close']));
   },
 };
 </script>
