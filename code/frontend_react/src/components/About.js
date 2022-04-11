@@ -33,7 +33,12 @@ function About() {
         </Typography>
       </Box>
       <Box sx={{ display: { xs: 'none', md: 'block' } }} marginRight="100px">
-        <img src={`./images/me.jpeg`} alt="Card Photograph" width="350px" />
+        <img
+          src={`./images/me.jpeg`}
+          alt="Card Photograph"
+          width="600px"
+          height="400px"
+        />
       </Box>
     </Box>
   );

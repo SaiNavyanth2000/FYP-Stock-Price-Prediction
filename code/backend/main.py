@@ -47,7 +47,7 @@ def submitData():
         print(data_dict)
         tick   = data_dict['ticker']
         model_type = data_dict['model_type']
-        response_object['prediction_value'] = 150
+        # response_object['prediction_value'] = 150
 
         def getTestData(ticker, start):
             data = pdr.get_data_yahoo(ticker, start=start, end=today)
@@ -61,9 +61,9 @@ def submitData():
         df = getTestData(tick,start) 
 
         storing_data = df['Close'].copy().to_json() 
-        response_object['past_50_days'] = storing_data
+        response_object['past_100_days'] = storing_data
 
-        return response_object
+        # return response_object
 
         #custom ann
         if(model_type == 'ANN'):

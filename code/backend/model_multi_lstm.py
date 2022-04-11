@@ -19,6 +19,7 @@ def multi_lstm_model(tick):
     scaler_x_path = "../../data/normalizers/" + tick + "/multi_lstm_x.pkl"
     scaler_y_path = "../../data/normalizers/" + tick + "/multi_lstm_y.pkl"
     model_path = "../../data/models/" + tick + "/multi_lstm"
+    pca_path = "../../data/normalizers/" + tick + "/multi_lstm_pca.pkl"
     if(os.path.exists(model_path)):
         model = load_model(model_path)
     if(os.path.exists(scaler_x_path)):
@@ -27,6 +28,10 @@ def multi_lstm_model(tick):
     if(os.path.exists(scaler_y_path)):
         with open(scaler_y_path, "rb") as input_file:
             scaler_y = pickle.load(input_file)
+    if(os.path.exists(pca_path)):
+        with open(pca_path, "rb") as input_file:
+            pca = pickle.load(input_file)
+    
 
     def getTestData(ticker, start): 
         data = pdr.get_data_yahoo(ticker, start=start, end=today)
@@ -61,8 +66,10 @@ def multi_lstm_model(tick):
     df = df[-7:]
     features_x = ['H-L','O-C','5MA','10MA','20MA','7SD','RSI_14', 'EMA8','EMA21','EMA34','EMA55','Returns','Volume']
     scaled_x_data = scaler_x.transform(df[features_x])
+
+    pca_data = pca.transform(scaled_x_data)
     # print(scaled_data.shape)
-    scaled_data = scaled_x_data.reshape((1,7,13))
+    scaled_data = pca_data.reshape((1,7,13))
     # sc_output = MinMaxScaler()
 
     # #https://stackoverflow.com/questions/49330195/how-to-use-inverse-transform-in-minmaxscaler-for-a-column-in-a-matrix
