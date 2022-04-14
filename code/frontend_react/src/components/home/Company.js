@@ -4,26 +4,39 @@ import { Link } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 
 function Company(props) {
-  const [companyName, setName] = useState(props.name);
-  const [ticker, setTicker] = useState(props.ticker);
-  const [subtitle, setSubtitle] = useState(props.text);
-  const [imgHeight, setImgHeight] = useState(props.height);
+  const navigation = useNavigate();
+
+  const handleClick = () => {
+    let path = '/predict';
+    navigation(path, { state: { ticker: props.ticker } });
+  };
 
   return (
-    <div>
+    <Box
+      display="flex"
+      width="30%"
+      flexDirection="row"
+      justifyContent="space-between"
+      alignItems="center"
+      boxShadow="12px 24px 12px lightgrey"
+      paddingLeft="30px"
+      paddingBottom="30px"
+    >
       <Box width="70%">
-        <h4>{companyName}</h4>
-        <p>Ticker Symbol: {ticker}</p>
-        <p>{subtitle}</p>
-        <Button>Predict Price</Button>
+        <h4>{props.name}</h4>
+        <p>Ticker Symbol: {props.ticker}</p>
+        <p>{props.text}</p>
+        <Button variant="contained" onClick={handleClick}>
+          Predict Price
+        </Button>
       </Box>
-      <Box width="30%" marginTop="20px" height={imgHeight}>
+      <Box width="40%">
         <img
-          style={{ maxHeight: imgHeight }}
-          src={process.env.PUBLIC_URL + 'images/logos/' + companyName + '.jpg'}
+          width="150px"
+          src={process.env.PUBLIC_URL + `images/logos/${props.name}.jpg`}
         />
       </Box>
-    </div>
+    </Box>
   );
 }
 

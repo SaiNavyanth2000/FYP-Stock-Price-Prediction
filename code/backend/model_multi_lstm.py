@@ -69,7 +69,7 @@ def multi_lstm_model(tick):
 
     pca_data = pca.transform(scaled_x_data)
     # print(scaled_data.shape)
-    scaled_data = pca_data.reshape((1,7,13))
+    scaled_data = pca_data.reshape((1,7,4))
     # sc_output = MinMaxScaler()
 
     # #https://stackoverflow.com/questions/49330195/how-to-use-inverse-transform-in-minmaxscaler-for-a-column-in-a-matrix

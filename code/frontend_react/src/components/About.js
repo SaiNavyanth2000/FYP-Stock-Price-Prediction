@@ -15,7 +15,7 @@ function About() {
     >
       <Box maxWidth="600px" marginLeft="200px">
         <Typography variant="h4">Who am I?</Typography>
-        <Typography variant="h5" style={{ marginTop: '50px' }}>
+        <Typography variant="h6" style={{ marginTop: '50px' }}>
           Hi! I am <span style={{ color: '#F46B6F' }}>Sai Navyanth</span>, a
           final year Computer Science student at CityU. This project is a part
           of my Final Year Project, where I work both on a web-app to predict
@@ -23,7 +23,7 @@ function About() {
           machine learning algorithms. I am personally a tech enthusiast and am
           always looking forward to new challenges.
         </Typography>
-        <Typography variant="h5" style={{ marginTop: '20px' }}>
+        <Typography variant="h6" style={{ marginTop: '20px' }}>
           Having spent majority of my undergraduate degree during the pandemic
           year, I decided to utilize my tech skills in the finance industry!
           Having worked as the Head of Quantitative Research at the CityU
@@ -32,7 +32,7 @@ function About() {
           Project.
         </Typography>
       </Box>
-      <Box sx={{ display: { xs: 'none', md: 'block' } }} marginRight="100px">
+      <Box sx={{ display: { xs: 'none', md: 'block' } }} margin="100px">
         <img
           src={`./images/me.jpeg`}
           alt="Card Photograph"

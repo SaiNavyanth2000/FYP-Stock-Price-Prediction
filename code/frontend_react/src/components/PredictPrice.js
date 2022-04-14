@@ -12,7 +12,7 @@ import { Divider } from '@mui/material';
 
 function PredictPrice() {
   const location = useLocation();
-  const ticker = location.state.ticker;
+  console.log(location.state);
 
   const [ModelType, setModelType] = useState('lstm');
   const [loading, setLoading] = useState(true);
@@ -21,7 +21,10 @@ function PredictPrice() {
   const [isMultiLstm, setMultiLstm] = useState(false);
   const [color, setColor] = useState('rgba(75,192,192,1)');
   // const [tick, setTick] = useState(ticker);
-  const [tick, setTick] = React.useState('AAPL');
+  const [tick, setTick] = React.useState(
+    location.state.ticker ? location.state.ticker : 'AAPL'
+  );
+  console.log(tick);
 
   useEffect(() => {
     const form_data = {
@@ -125,9 +128,9 @@ function PredictPrice() {
             >
               <h4>Select Company:</h4>
               <Select value={tick} fullWidth onChange={handleChangeTicker}>
-                <MenuItem value={'GOOGL'}>Google</MenuItem>
+                <MenuItem value={'GOOG'}>Google</MenuItem>
                 <MenuItem value={'TSLA'}>Tesla</MenuItem>
-                <MenuItem value={'AMZN'}>Amazon</MenuItem>
+                <MenuItem value={'GOOGL'}>Alphabet</MenuItem>
                 <MenuItem value={'MSFT'}>Microsoft</MenuItem>
                 <MenuItem value={'AAPL'}>Apple</MenuItem>
               </Select>
