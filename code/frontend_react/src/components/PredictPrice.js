@@ -32,7 +32,7 @@ function PredictPrice() {
       model_type: ModelType,
     };
     setLoading(true);
-    fetch('http://localhost:5000/predict', {
+    fetch('https://fyp-backend-sai.herokuapp.com/predict', {
       method: 'POST', // or 'PUT'
       headers: {
         'Content-Type': 'application/json',

@@ -90,15 +90,57 @@ function Home() {
             width="500px"
             src={process.env.PUBLIC_URL + 'images/opt_portfolio.jpg'}
           />
-
           <p>While creating the portfolio, these weights are taken in mind.</p>
-          <h2>Optimal Portfolio Results:</h2>
-          <p style={{ fontSize: '30px', fontStyle: 'normal' }}>
-            Sharpe Ratio: <span>1.12</span>
-          </p>
-          <p style={{ fontSize: '30px', fontStyle: 'normal' }}>
-            Return: <span>29.5%</span>
-          </p>
+
+          <Box
+            display="flex"
+            flexDirection="row"
+            justifyContent="space-between"
+          >
+            <Box width="25%">
+              <h3>Buy and Sell strategy</h3>
+
+              <h4>Portfolio Results:</h4>
+              <p style={{ fontSize: '25px', fontStyle: 'normal' }}>
+                Sharpe Ratio: <span>1.12</span>
+              </p>
+              <p style={{ fontSize: '25px', fontStyle: 'normal' }}>
+                Return: <span>29.5%</span>
+              </p>
+            </Box>
+            <Box width="25%">
+              <h3>Univariate LSTM Model</h3>
+
+              <h4>Portfolio Results:</h4>
+              <p style={{ fontSize: '25px', fontStyle: 'normal' }}>
+                Sharpe Ratio: <span>1.32</span>
+              </p>
+              <p style={{ fontSize: '25px', fontStyle: 'normal' }}>
+                Return: <span>46.2%</span>
+              </p>
+            </Box>
+            <Box width="25%">
+              <h3>Multivariate LSTM Model</h3>
+
+              <h4>Portfolio Results:</h4>
+              <p style={{ fontSize: '25px', fontStyle: 'normal' }}>
+                Sharpe Ratio: <span>3.08</span>
+              </p>
+              <p style={{ fontSize: '25px', fontStyle: 'normal' }}>
+                Return: <span>71.8%</span>
+              </p>
+            </Box>
+            <Box width="25%">
+              <h3>Artificial Neural Network Model</h3>
+              <h4>Portfolio Results:</h4>
+              <p style={{ fontSize: '25px', fontStyle: 'normal' }}>
+                Sharpe Ratio: <span>5.2</span>
+              </p>
+              <p style={{ fontSize: '25px', fontStyle: 'normal' }}>
+                Return: <span>193.5%</span>
+              </p>
+            </Box>
+          </Box>
         </Box>
       </Box>
     </div>
